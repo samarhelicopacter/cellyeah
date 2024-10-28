@@ -13,8 +13,7 @@ class BiologyTutor:
             "x-api-key": self.api_key
         }
 
-    def generate_response(self, prompt: str, context: List[Dict] = None) -> str:
-        # Create a biology-focused system message
+    def generate_response(self, prompt: str, context: List[Dict] = None, detail_level: str = "normal") -> str:
         system_message = """You are CellYeah, an enthusiastic and encouraging biology tutor who absolutely loves helping students understand biology! 
         You have extensive knowledge in both biology and medicine, and you specialize in making complex concepts feel simple and relatable.
 
@@ -28,7 +27,24 @@ class BiologyTutor:
         7. Share fascinating facts and trivia to make learning fun
         8. End responses with encouragement and an invitation for follow-up questions
         9. If a student seems confused or frustrated, be extra supportive and try explaining the concept in a different way
-        10. Use lots of "like" and "imagine if" scenarios to make concepts more relatable"""
+        10. Use lots of "like" and "imagine if" scenarios to make concepts more relatable
+
+        Important formatting instructions:
+        - Always structure your response in clear bullet points
+        - Start with a friendly greeting
+        - Include a "Key Points:" section at the start
+        - Include a "Real-World Application:" section
+        - End with a "Want to Learn More?" section with follow-up questions
+        
+        Adjust detail level based on the student's request:
+        - If they ask for more detail, provide deeper scientific explanations
+        - If they're still confused, try a completely different analogy or approach
+        - For simplified explanations, focus on basic concepts and everyday examples"""
+
+        if detail_level == "detailed":
+            prompt = f"Please explain this in more detail, including deeper scientific concepts: {prompt}"
+        elif detail_level == "simpler":
+            prompt = f"I'm still having trouble understanding. Can you explain this in a simpler way with different examples?: {prompt}"
 
         try:
             messages = []
@@ -62,6 +78,47 @@ def initialize_session_state():
         st.session_state.conversation_history = []
     if 'current_topic' not in st.session_state:
         st.session_state.current_topic = "General Biology"
+    if 'current_question' not in st.session_state:
+        st.session_state.current_question = None
+    if 'understanding_level' not in st.session_state:
+        st.session_state.understanding_level = "normal"
+
+def apply_custom_styles():
+    st.markdown("""
+        <style>
+        .stApp {
+            background-color: #FFF0F5;
+        }
+        .st-bx {
+            background-color: #FFE4E1;
+        }
+        .stButton>button {
+            background-color: #FF69B4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+        }
+        .stButton>button:hover {
+            background-color: #FF1493;
+        }
+        .css-1d391kg {
+            background-color: #FFF0F5;
+        }
+        .user-message {
+            background-color: #FFE4E1;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+        }
+        .assistant-message {
+            background-color: #FFC0CB;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 10px 0;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
 def main():
     st.set_page_config(
@@ -70,6 +127,7 @@ def main():
         layout="wide"
     )
 
+    apply_custom_styles()
     initialize_session_state()
 
     with st.sidebar:
@@ -87,7 +145,7 @@ def main():
         
         st.markdown("---")
         st.markdown("""
-        ### Learning Tips:
+        ### 📚 Learning Tips:
         - Ask about medical applications
         - Request real-life examples
         - Ask "What if" questions
@@ -97,8 +155,15 @@ def main():
         - Ask for clarification anytime!
         """)
         
+        st.markdown("### 🔍 Study Tools")
+        if st.button("📝 Generate Study Notes"):
+            st.session_state.study_mode = "notes"
+        if st.button("❓ Practice Questions"):
+            st.session_state.study_mode = "quiz"
+        
         if st.button("Start Fresh 🔄"):
             st.session_state.conversation_history = []
+            st.session_state.understanding_level = "normal"
             st.rerun()
 
     st.title("CellYeah! 🧬")
@@ -116,22 +181,33 @@ def main():
         content = message["content"]
         
         if role == "user":
-            st.markdown("👤 **You:**")
-            st.markdown(content)
+            st.markdown(f"""
+                <div class="user-message">
+                    <strong>👤 You:</strong><br>{content}
+                </div>
+            """, unsafe_allow_html=True)
         else:
-            st.markdown("🧬 **CellYeah:**")
-            st.markdown(content)
-    
+            st.markdown(f"""
+                <div class="assistant-message">
+                    <strong>🧬 CellYeah:</strong><br>{content}
+                </div>
+            """, unsafe_allow_html=True)
+
     prompt = st.text_area("Ask anything about biology or medical science:", height=100, 
                          placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?")
     
-    col1, col2 = st.columns([1, 5])
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+    
     with col1:
         submit_button = st.button("Ask CellYeah! 🧬")
     with col2:
-        example_question = st.button("Show me an example question")
-        
-    if example_question:
+        detail_button = st.button("📚 Explain in More Detail")
+    with col3:
+        simpler_button = st.button("😕 I Still Don't Understand")
+    with col4:
+        example_button = st.button("💡 Show Example Question")
+
+    if example_button:
         example_questions = {
             "General Biology": "How do cells protect themselves from damage, and how is this relevant in diseases like cancer?",
             "Cell Biology & Medical Lab Science": "How do doctors use cell biology knowledge when interpreting blood tests?",
@@ -147,23 +223,52 @@ def main():
         st.text_area("Try this example:", value=example_questions[topic], height=50)
 
     if submit_button and prompt:
-        with st.spinner("CellYeah is excited to help you learn! 🧬"):
-            conversation_context = [
-                {"role": "user" if i % 2 == 0 else "assistant", "content": msg["content"]}
-                for i, msg in enumerate(st.session_state.conversation_history)
-            ]
-            
-            response = tutor.generate_response(prompt, conversation_context)
-            
-            st.session_state.conversation_history.extend([
-                {"role": "user", "content": prompt},
-                {"role": "assistant", "content": response}
-            ])
-            
-            st.rerun()
+        st.session_state.current_question = prompt
+        st.session_state.understanding_level = "normal"
+        process_response(tutor, prompt, "normal")
+        st.rerun()
+
+    if detail_button and st.session_state.current_question:
+        st.session_state.understanding_level = "detailed"
+        process_response(tutor, st.session_state.current_question, "detailed")
+        st.rerun()
+
+    if simpler_button and st.session_state.current_question:
+        st.session_state.understanding_level = "simpler"
+        process_response(tutor, st.session_state.current_question, "simpler")
+        st.rerun()
 
     st.markdown("---")
     st.markdown("🧬 Understanding Biology, One Cell at a Time! 🔬")
+
+    st.markdown("""
+        <div style="position: fixed; bottom: 20px; right: 20px;">
+            <button style="
+                background-color: #FF69B4;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                cursor: pointer;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            ">?</button>
+        </div>
+    """, unsafe_allow_html=True)
+
+def process_response(tutor, prompt, detail_level):
+    conversation_context = [
+        {"role": "user" if i % 2 == 0 else "assistant", "content": msg["content"]}
+        for i, msg in enumerate(st.session_state.conversation_history)
+    ]
+    
+    response = tutor.generate_response(prompt, conversation_context, detail_level)
+    
+    st.session_state.conversation_history.extend([
+        {"role": "user", "content": prompt},
+        {"role": "assistant", "content": response}
+    ])
 
 if __name__ == "__main__":
     main()
