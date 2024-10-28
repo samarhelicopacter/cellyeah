@@ -31,22 +31,15 @@ class BiologyTutor:
         10. Use lots of "like" and "imagine if" scenarios to make concepts more relatable"""
 
         try:
+            messages = []
+            if context:
+                messages.extend(context)
+            messages.append({"role": "user", "content": prompt})
+            
             data = {
                 "model": "claude-3-sonnet-20240229",
                 "max_tokens": 2048,
                 "system": system_message,
-                "messages": [{"role": "user", "content": prompt}]
-            }]
-        
-        if context:
-            messages.extend(context)
-            
-        messages.append({"role": "user", "content": prompt})
-
-        try:
-            data = {
-                "model": "claude-3-sonnet-20240229",
-                "max_tokens": 2048,
                 "messages": messages
             }
             
@@ -72,7 +65,7 @@ def initialize_session_state():
 
 def main():
     st.set_page_config(
-        page_title="CellYeah! - Your Biology Learning Assistant",
+        page_title="CellYeah! - Your Friendly Biology & Medical Science Tutor",
         page_icon="🧬",
         layout="wide"
     )
@@ -81,31 +74,35 @@ def main():
 
     with st.sidebar:
         st.title("🧬 CellYeah!")
-        st.markdown("Your Personal Biology Tutor")
+        st.markdown("Your Friendly Biology & Medical Science Tutor")
         
         topic = st.selectbox(
             "Choose your topic:",
-            ["General Biology", "Cell Biology", "Genetics", "Ecology", 
-             "Evolution", "Human Anatomy", "Microbiology", "Plant Biology",
-             "Biochemistry", "Biotechnology"]
+            ["General Biology", "Cell Biology & Medical Lab Science", 
+             "Genetics & Medical Genetics", "Human Anatomy & Physiology",
+             "Microbiology & Infectious Disease", "Biochemistry & Pharmacology",
+             "Neurobiology & Neuroscience", "Immunology & Disease",
+             "Biotechnology & Medical Innovation", "Clinical Applications"]
         )
         
         st.markdown("---")
         st.markdown("""
-        ### Study Tips:
-        - Ask for real-world examples
-        - Request diagrams when needed
-        - Break down complex processes
-        - Connect concepts together
-        - Practice with sample problems
+        ### Learning Tips:
+        - Ask about medical applications
+        - Request real-life examples
+        - Ask "What if" questions
+        - Connect topics to health & disease
+        - Start with the basics
+        - Take it step by step
+        - Ask for clarification anytime!
         """)
         
-        if st.button("Clear Conversation"):
+        if st.button("Start Fresh 🔄"):
             st.session_state.conversation_history = []
             st.rerun()
 
     st.title("CellYeah! 🧬")
-    st.markdown(f"Current Topic: **{topic}**")
+    st.markdown(f"Current Topic: **{topic}** 📚")
 
     if 'ANTHROPIC_API_KEY' not in st.secrets:
         st.error("Please set your ANTHROPIC_API_KEY in .streamlit/secrets.toml!")
@@ -119,13 +116,14 @@ def main():
         content = message["content"]
         
         if role == "user":
-            st.markdown("🧑‍🎓 **You:**")
+            st.markdown("👤 **You:**")
             st.markdown(content)
         else:
             st.markdown("🧬 **CellYeah:**")
             st.markdown(content)
     
-    prompt = st.text_area("Ask your biology question:", height=100)
+    prompt = st.text_area("Ask anything about biology or medical science:", height=100, 
+                         placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?")
     
     col1, col2 = st.columns([1, 5])
     with col1:
@@ -135,21 +133,21 @@ def main():
         
     if example_question:
         example_questions = {
-            "General Biology": "What are the main differences between prokaryotic and eukaryotic cells?",
-            "Cell Biology": "Can you explain the stages of mitosis?",
-            "Genetics": "How does DNA replication work?",
-            "Ecology": "What is the role of keystone species in an ecosystem?",
-            "Evolution": "How does natural selection lead to adaptation?",
-            "Human Anatomy": "How does the human heart pump blood through the body?",
-            "Microbiology": "What are the different types of bacteria and their characteristics?",
-            "Plant Biology": "How do plants perform photosynthesis?",
-            "Biochemistry": "What are the main steps in cellular respiration?",
-            "Biotechnology": "How does CRISPR gene editing work?"
+            "General Biology": "How do cells protect themselves from damage, and how is this relevant in diseases like cancer?",
+            "Cell Biology & Medical Lab Science": "How do doctors use cell biology knowledge when interpreting blood tests?",
+            "Genetics & Medical Genetics": "How do genetic mutations lead to diseases, and how are they treated?",
+            "Human Anatomy & Physiology": "What happens in the body during a heart attack, and how do treatments work?",
+            "Microbiology & Infectious Disease": "How do antibiotics work, and why is antibiotic resistance a problem?",
+            "Biochemistry & Pharmacology": "How do pain medications work at the molecular level?",
+            "Neurobiology & Neuroscience": "What happens in the brain during a seizure, and how do medications help?",
+            "Immunology & Disease": "How does our immune system fight off viruses, and why do vaccines help?",
+            "Biotechnology & Medical Innovation": "How is CRISPR being used to treat genetic diseases?",
+            "Clinical Applications": "How do doctors use laboratory tests to diagnose diseases?"
         }
-        st.text_area("Example question for your topic:", value=example_questions[topic], height=50)
+        st.text_area("Try this example:", value=example_questions[topic], height=50)
 
     if submit_button and prompt:
-        with st.spinner("CellYeah is thinking... 🧬"):
+        with st.spinner("CellYeah is excited to help you learn! 🧬"):
             conversation_context = [
                 {"role": "user" if i % 2 == 0 else "assistant", "content": msg["content"]}
                 for i, msg in enumerate(st.session_state.conversation_history)
@@ -165,7 +163,7 @@ def main():
             st.rerun()
 
     st.markdown("---")
-    st.markdown("Made with 🧬 | Ask me anything about biology!")
+    st.markdown("🧬 Understanding Biology, One Cell at a Time! 🔬")
 
 if __name__ == "__main__":
     main()
