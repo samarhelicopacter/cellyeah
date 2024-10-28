@@ -1,6 +1,5 @@
-# Required imports
-import streamlit as st
 import requests
+import streamlit as st
 from typing import List, Dict
 import json
 import random
@@ -16,25 +15,26 @@ class BiologyTutor:
         }
 
     def generate_response(self, prompt: str, context: List[Dict] = None, detail_level: str = "normal") -> str:
-        system_message = """You are CellYeah, an enthusiastic and encouraging biology tutor who absolutely loves helping students understand biology! 
-        You have extensive knowledge in biology, medicine, and anatomy, and you specialize in making complex concepts feel simple and relatable.
+        system_message = """You are CellYeah, an enthusiastic and encouraging biology tutor who absolutely loves helping students understand biology and you have multiple PhDs in all fields of biology and an MD degree! 
+        You have extensive knowledge in both biology and medicine, and you specialize in making complex concepts feel simple and relatable.
 
         Your teaching style should be:
         1. Extremely friendly and encouraging - use phrases like "Great question!", "You're going to love learning about this!", and always praise students' curiosity
-        2. Break down complex topics into simple, digestible pieces using everyday analogies
+        2. Break down complex topics into simple, digestible pieces using everyday analogies and then give students all the details to understand the topic
         3. Connect biology concepts to medical and healthcare examples whenever possible (since many students are interested in medical careers)
         4. Use engaging storytelling to explain concepts (e.g., "Imagine you're a white blood cell patrolling the bloodstream...")
         5. Always provide real-world medical applications or clinical relevance when possible
-        6. Explain things as if talking to a friend, using conversational language while maintaining scientific accuracy
+        6. Explain things as if talking to a friend, using conversational language while maintaining scientific accuracy and then add the explanation like a textbook so students learn all the details
         7. Share fascinating facts and trivia to make learning fun
-        8. End responses with encouragement and an invitation for follow-up questions
+        8. End responses with encouragement and an invitation for follow-up questions that you also provide answers to
         9. If a student seems confused or frustrated, be extra supportive and try explaining the concept in a different way
         10. Use lots of "like" and "imagine if" scenarios to make concepts more relatable
 
         Important formatting instructions:
         - Always structure your response in clear bullet points
-        - Start with a friendly greeting
+        - Start with a greeting "Hi Einstein"
         - Include a "Key Points:" section at the start
+        -Include as "Details" section after
         - Include a "Real-World Application:" section
         - End with a "Want to Learn More?" section with follow-up questions"""
 
@@ -108,17 +108,12 @@ def get_success_message():
 def initialize_session_state():
     if 'conversation_history' not in st.session_state:
         st.session_state.conversation_history = []
+    if 'current_topic' not in st.session_state:
+        st.session_state.current_topic = "General Biology"
     if 'current_question' not in st.session_state:
         st.session_state.current_question = None
     if 'understanding_level' not in st.session_state:
         st.session_state.understanding_level = "normal"
-    if 'tutor' not in st.session_state:
-        # Get API key from Streamlit secrets or environment variable
-        api_key = st.secrets.get("ANTHROPIC_API_KEY", None)
-        if api_key is None:
-            st.error("Please set the ANTHROPIC_API_KEY in your Streamlit secrets or environment variables.")
-            st.stop()
-        st.session_state.tutor = BiologyTutor(api_key)
 
 def apply_custom_styles():
     st.markdown("""
@@ -149,6 +144,17 @@ def apply_custom_styles():
             text-align: center;
             animation: slideIn 0.5s ease;
             box-shadow: 0 4px 15px rgba(255,20,147,0.2);
+        }
+        .topic-header {
+            background: linear-gradient(45deg, #FF69B4, #FF1493);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
         .user-message {
             background-color: #FFE4E1;
@@ -208,17 +214,13 @@ def show_success_message():
         </div>
     """, unsafe_allow_html=True)
 
-def process_response(prompt, detail_level):
-    if 'tutor' not in st.session_state:
-        st.error("Tutor not initialized. Please refresh the page.")
-        st.stop()
-        
+def process_response(tutor, prompt, detail_level):
     conversation_context = [
         {"role": "user" if i % 2 == 0 else "assistant", "content": msg["content"]}
         for i, msg in enumerate(st.session_state.conversation_history)
     ]
     
-    response = st.session_state.tutor.generate_response(prompt, conversation_context, detail_level)
+    response = tutor.generate_response(prompt, conversation_context, detail_level)
     
     st.session_state.conversation_history.extend([
         {"role": "user", "content": prompt},
@@ -248,6 +250,15 @@ def main():
         st.title("🧬 CellYeah!")
         st.markdown("Your Friendly Biology & Medical Science Tutor")
         
+        topic = st.selectbox(
+            "Choose your topic:",
+            ["General Biology", "Cell Biology & Medical Lab Science", 
+             "Genetics & Medical Genetics", "Human Anatomy & Physiology",
+             "Microbiology & Infectious Disease", "Biochemistry & Pharmacology",
+             "Neurobiology & Neuroscience", "Immunology & Disease",
+             "Biotechnology & Medical Innovation", "Clinical Applications"]
+        )
+        
         st.markdown("---")
         st.markdown("""
         ### 📚 Learning Tips:
@@ -271,7 +282,19 @@ def main():
             st.session_state.understanding_level = "normal"
             st.rerun()
 
-    # Display conversation history
+    st.markdown(f"""
+        <div class="topic-header">
+            🧬 Current Topic: {topic} 
+        </div>
+    """, unsafe_allow_html=True)
+
+    if 'ANTHROPIC_API_KEY' not in st.secrets:
+        st.error("Please set your ANTHROPIC_API_KEY in .streamlit/secrets.toml!")
+        st.stop()
+        
+    api_key = st.secrets["ANTHROPIC_API_KEY"]
+    tutor = BiologyTutor(api_key)
+
     for message in st.session_state.conversation_history:
         role = message["role"]
         content = message["content"]
@@ -289,11 +312,9 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
 
-    # Input area
-    prompt = st.text_area("Ask anything about biology, anatomy, or medical science:", height=100, 
+    prompt = st.text_area("Ask anything about biology or medical science:", height=100, 
                          placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?")
     
-    # Define all buttons
     col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
     
     with col1:
@@ -305,37 +326,35 @@ def main():
     with col4:
         example_button = st.button("💡 Show Example Question")
 
-    # Handle example button
     if example_button:
-        example_questions = [
-            "How do cells protect themselves from damage, and how is this relevant in diseases like cancer?",
-            "How do doctors use cell biology knowledge when interpreting blood tests?",
-            "How do genetic mutations lead to diseases, and how are they treated?",
-            "What happens in the body during a heart attack, and how do treatments work?",
-            "How do antibiotics work, and why is antibiotic resistance a problem?",
-            "How do pain medications work at the molecular level?",
-            "What happens in the brain during a seizure, and how do medications help?",
-            "How does our immune system fight off viruses, and why do vaccines help?",
-            "How is CRISPR being used to treat genetic diseases?",
-            "How do doctors use laboratory tests to diagnose diseases?"
-        ]
-        st.text_area("Try this example:", value=random.choice(example_questions), height=50)
+        example_questions = {
+            "General Biology": "How do cells protect themselves from damage, and how is this relevant in diseases like cancer?",
+            "Cell Biology & Medical Lab Science": "How do doctors use cell biology knowledge when interpreting blood tests?",
+            "Genetics & Medical Genetics": "How do genetic mutations lead to diseases, and how are they treated?",
+            "Human Anatomy & Physiology": "What happens in the body during a heart attack, and how do treatments work?",
+            "Microbiology & Infectious Disease": "How do antibiotics work, and why is antibiotic resistance a problem?",
+            "Biochemistry & Pharmacology": "How do pain medications work at the molecular level?",
+            "Neurobiology & Neuroscience": "What happens in the brain during a seizure, and how do medications help?",
+            "Immunology & Disease": "How does our immune system fight off viruses, and why do vaccines help?",
+            "Biotechnology & Medical Innovation": "How is CRISPR being used to treat genetic diseases?",
+            "Clinical Applications": "How do doctors use laboratory tests to diagnose diseases?"
+        }
+        st.text_area("Try this example:", value=example_questions[topic], height=50)
 
-    # Handle other buttons
     if submit_button and prompt:
         st.session_state.current_question = prompt
         st.session_state.understanding_level = "normal"
-        process_response(prompt, "normal")
+        process_response(tutor, prompt, "normal")
         st.rerun()
 
     if detail_button and st.session_state.current_question:
         st.session_state.understanding_level = "detailed"
-        process_response(st.session_state.current_question, "detailed")
+        process_response(tutor, st.session_state.current_question, "detailed")
         st.rerun()
 
     if simpler_button and st.session_state.current_question:
         st.session_state.understanding_level = "simpler"
-        process_response(st.session_state.current_question, "simpler")
+        process_response(tutor, st.session_state.current_question, "simpler")
         st.rerun()
 
     st.markdown("---")
