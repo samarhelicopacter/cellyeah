@@ -352,4 +352,29 @@ def main():
         st.rerun()
 
     if simpler_button and st.session_state.current_question:
-        st.session_state.understanding_level = "simpler
+        st.session_state.understanding_level = "simpler"
+        process_response(tutor, st.session_state.current_question, "simpler")
+        st.rerun()
+
+    st.markdown("---")
+    st.markdown("🧬 Understanding Biology, One Cell at a Time! 🔬")
+
+    # Floating help button
+    st.markdown("""
+        <div style="position: fixed; bottom: 20px; right: 20px;">
+            <button style="
+                background-color: #FF69B4;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 60px;
+                height: 60px;
+                font-size: 24px;
+                cursor: pointer;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            ">?</button>
+        </div>
+    """, unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    main()
