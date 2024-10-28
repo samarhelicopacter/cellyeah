@@ -312,8 +312,10 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
 
-    prompt = st.text_area("Ask anything about biology or medical science:", height=100, 
-                         placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?")
+    prompt = st.text_input("Ask anything about biology or medical science:", 
+                           placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?",
+                           on_change=lambda: process_response(tutor, st.session_state.current_question, "normal"),
+                           key="current_question")
     
     col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
     
@@ -341,10 +343,9 @@ def main():
         }
         st.text_area("Try this example:", value=example_questions[topic], height=50)
 
-    if submit_button and prompt:
-        st.session_state.current_question = prompt
+    if submit_button and st.session_state.current_question:
         st.session_state.understanding_level = "normal"
-        process_response(tutor, prompt, "normal")
+        process_response(tutor, st.session_state.current_question, "normal")
         st.rerun()
 
     if detail_button and st.session_state.current_question:
