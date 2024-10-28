@@ -312,9 +312,7 @@ def main():
             """, unsafe_allow_html=True)
 
     prompt = st.text_area("Ask anything about biology or medical science:", height=100, 
-                         placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?",
-    key="prompt",
-    on_change=submit_prompt)
+                         placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?")
     
     col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
     
