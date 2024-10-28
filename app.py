@@ -8,7 +8,7 @@ class BiologyTutor:
         self.api_key = api_key
         self.base_url = "https://api.anthropic.com/v1/messages"
         self.headers = {
-            "anthropic-version": "2024-01-01",
+            "anthropic-version": "2023-06-01",
             "content-type": "application/json",
             "x-api-key": self.api_key
         }
