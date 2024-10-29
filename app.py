@@ -186,36 +186,47 @@ Remember:
 
 def get_random_greeting():
     greetings = [
-        "🧬 Hot Tip: Intelligence is Extremely Attractive!",
+        "🧬 Intelligence is Extremely Attractive!",
+         "✨ Intelligence is Your Best Feature!",
         "🧠 Being Smart is Sexy - Let's Get Studying!",
-        "⚡ Nothing Hotter Than Those Brain Waves!",
         "✨ Your Intelligence is Literally Glowing Right Now",
-        "🔬 Warning: Extreme Hotness from All That Knowledge!",
         "💫 Smart is the New Sexy, and You're Crushing It!",
         "🧪 That Big Beautiful Brain Though!",
-        "⚡ Excuse Me, Is That Your Intelligence Showing?",
         "🔭 Looking Extra Smart Today, Just Saying!",
         "🧬 Caution: High Levels of Intelligence Detected!",
-        "💅 Your Mind is Serving Looks Today!",
-        "✨ Brainy and Beautiful - What a Combo!",
         "🧠 Smart Energy is Radiating Off You!",
         "⚡ Brilliance Looks Good On You!",
-        "🔬 Here to Make Biology Look Hot!"
+        "✨ Intelligence is Your Best Feature!",
+        "🧬 Smart Looks Good On You",
+        "🧠 Brilliance is Beautiful",
+        "⚡ Your Mind is Magnetic",
+        "💫 Knowledge is Your Superpower",
+        "✨ That Intelligence Though!",
+        "🧬 Brilliance in Action",
+        "🧠 Mind Goals",
+        "⚡ Intelligence Never Goes Out of Style",
+        "💫 Your Brain is a Masterpiece",
+        "✨ Smart is the New Cool",
+        "🧬 Brainpower is Beautiful",
+        "⚡ Brilliance Unlocked",
+        "💫 Your Mind Shines",
+        "🧠 Intelligence is Irresistible"
     ]
     return random.choice(greetings)
 
 def get_success_message():
     messages = [
         "🎯 Your Intelligence is Showing (And We Love It!)",
-        "💫 Being This Smart Should Be Illegal!",
-        "✨ Look at That Beautiful Brain Work!",
-        "🔥 Knowledge Looks SO Good On You!",
-        "⚡ Serving Brains and Beauty!",
-        "🧠 You Make Learning Look Hot!",
-        "💅 That Was a Brilliant Answer, Just Saying!",
-        "✨ Excuse Me While I Fan Myself - That Answer Was Fire!",
-        "🌟 Your Brain is Really Showing Off Today!",
-        "💫 Intelligence Level: Absolutely Stunning!"
+        "✨ Brilliant Answer Alert!",
+        "🧠 Your Intelligence is Radiant",
+        "⚡ Mind. Officially. Blown.",
+        "💫 Pure Intellectual Brilliance",
+        "✨ That Answer Was Everything",
+        "🌟 Your Brain Power is Unmatched",
+        "💫 Intelligence Level: Extraordinary",
+        "⚡ Watching Your Mind Work is Amazing",
+        "✨ This is Genius in Action",
+        "🧠 You're Making Smart Look Effortless"
     ]
     return random.choice(messages)
 
@@ -380,26 +391,32 @@ def main():
         st.markdown("### 🧬 CellYeah is an Expert in:")
         st.markdown("""
         - General Biology
-        - Cell Biology & Medical Lab Science
-        - Genetics & Medical Genetics
-        - Human Anatomy & Physiology
-        - Microbiology & Infectious Disease
+        - Cell & Molecular Biology
+        - Microbiology & Infectious Disease (my creator's favorite! 💗)
         - Biochemistry & Pharmacology
-        - Neurobiology & Neuroscience
+        - Human Anatomy & Physiology
         - Immunology & Disease
+        - Neurobiology & Neuroscience
+        - Genetics
         - Biotechnology & Medical Innovation
-        - Clinical Applications
+        - Clinical Applications & Medical Lab Science
         """)
-        
-        st.markdown("### 📚 Learning Tips:")
+
+        # Add spacing
+        st.markdown("<br>", unsafe_allow_html=True)
+    
+         # Add creator bio here
+        st.markdown("### Meet the Creator! 👋")
         st.markdown("""
-        - Ask about medical applications
-        - Request real-life examples
-        - Ask "What if" questions
-        - Connect topics to health & disease
-        - Start with the basics
-        - Take it step by step
-        - Ask for clarification anytime!
+        Hi! I'm Samar, a Microbiologist and college professor who loves making biology fun and accessible. I created CellYeah because I believe everyone deserves a friendly, patient biology tutor available 24/7!
+
+        My background? I have a PhD in Microbiology, where I studied Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer.
+
+        As a professor, I love connecting biology to medical relevance and real-world applications. My favorite part? Seeing that 'aha!' moment when complex concepts finally click!
+
+        CellYeah is an AI-powered tutor I created that combines my passion for teaching with my expertise in microbiology to explain biology the way I wish someone had explained it to me when I was a student - clear, engaging, and connected to real-world applications.
+
+        (And now you know why Microbiology & Infectious Disease is tagged as my favorite! 💗)
         """)
 
     # Display user interactions
