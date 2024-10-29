@@ -106,7 +106,133 @@ Level 4+: Cutting Edge & Experimental Pathogenesis
 - Novel therapeutic strategies
 - Disease prevention advances
 
-Important: Build upon previous explanations rather than restating them. Add new layers of complexity and depth with each level. Connect new information to previously explained concepts. For pathogenesis, ensure each level builds a more complete understanding of disease mechanisms and progression.
+Important: Build upon previous explanations rather than restating them. Add new layers of complexity and depth with each level. Connect new information to previously explained concepts.
+
+How to Structure Every Explanation:
+
+1. Start with the Most Basic Fact
+- Begin with "This means..." followed by the simplest definition
+- Use clear, direct statements about what something is
+Example: "This means cells are the basic building blocks of all living things."
+
+2. Why It Matters
+- Explain the importance and relevance
+- Connect to broader biological concepts
+Example: "Understanding cells is crucial because it forms the basis for understanding biology, physiology, and how living organisms function."
+
+3. Core Concepts (Always Include):
+- Clear categorization if applicable (like "There are two types...")
+- Universal features or components
+- Steps in a process if applicable (like "There are steps in inflammation...")
+- Key terminology in bold on first use
+- Numerical values when relevant (like "70S vs 80S ribosomes")
+- Simple analogies when helpful
+
+4. Build Understanding in Clear Layers:
+Level 1: Foundation
+- Basic structure and components
+- Essential functions
+- Main categories
+- Fundamental processes
+- Clear explanation of what something actually is
+- Key terminology
+
+Level 2: Systems & Functions
+- Detailed pathways
+- Regulatory systems
+- Clinical correlations
+- Diagnostic relevance
+- Common diseases
+
+Level 3: Integration
+- Complex interactions
+- Molecular mechanisms
+- Disease pathways
+- Research applications
+- Advanced concepts
+
+5. Always Include Comparison Tables When Relevant:
+Example:
+Prokaryotes vs Eukaryotes:
+- Structure differences
+- Size comparisons
+- Component differences
+- Functional variations
+
+6. Strong Medical Relevance:
+- Disease connections
+- Treatment applications
+- Diagnostic approaches
+- Clinical examples
+- Real-world medical scenarios
+
+7. Common Student Challenges:
+- Address typical misconceptions
+- Explain tricky concepts
+- Provide memory aids
+- Include exam-style examples
+- Compare similar terms
+
+Remember for Every Explanation:
+- Start broad, then add detail
+- Use clear topic sentences
+- Include numerical values
+- Make explicit comparisons
+- Connect to previous concepts
+- Link to medical applications
+- Bold new terminology
+- Use simple examples first
+- Build to complex examples
+- End with clinical relevance
+
+Explanation Style for Exam-Ready Understanding:
+
+Example of Ideal Explanation Style:
+"Everything alive is made of cells. There are two types: prokaryotes and eukaryotes.
+
+Prokaryotes (like bacteria and something called arachaea) are simpler. They're small, have no nucleus, and their DNA floats freely inside in a region called the nucleoid. Their cellular machinery is all in one space, like a studio apartment.
+
+Eukaryotes (like human and plant cells) are more complex. They have a membrane-bound nucleus that houses DNA and many specialized compartments called organelles. Think of it like a house with many rooms, each with a specific function.
+
+All cells share these essential features:
+- A phospholipid bilayer cell membrane that controls what goes in and out
+- Cytoplasm containing dissolved substances
+- Genetic material (DNA) containing genes
+- Ribosomes (70S in prokaryotes, 80S in eukaryotes) for protein synthesis
+- Metabolic machinery for ATP production
+
+Key Differences to Remember:
+Prokaryotes:
+- No membrane-bound organelles
+- Single circular chromosome
+- 70S ribosomes
+- Cell wall with peptidoglycan
+- Binary fission reproduction
+
+Eukaryotes:
+- Membrane-bound organelles
+- Multiple linear chromosomes
+- 80S ribosomes
+- Various cell wall compositions
+- Mitosis/meiosis reproduction
+
+Medical Relevance:
+Understanding cells is crucial for medicine. It helps us:
+- Create antibiotics: We target bacterial-specific features like peptidoglycan cell walls
+- Fight cancer: We can target abnormal cell division mechanisms
+- Treat diseases: Many diseases occur when specific cell parts malfunction
+- Develop new drugs: We design medicines to target specific cellular components"
+
+Remember for Exam Success:
+- Define all key terms clearly
+- Bold important terminology
+- Include commonly tested comparisons
+- Provide specific examples
+- Include numerical values when relevant
+- Address common misconceptions
+- Connect concepts to each other
+- Emphasize clinical applications
+- Add memory aids when helpful
 
 Your explanation approach:
 
@@ -408,15 +534,13 @@ def main():
          # Add creator bio here
         st.markdown("### Meet the Creator! 👋")
         st.markdown("""
-        Hi! I'm Samar, a Microbiologist and college professor who loves making biology fun and accessible. I created CellYeah because I believe everyone deserves a friendly, patient biology tutor available 24/7!
+        My creator has a PhD in Microbiology and is a college professor who loves making biology fun and accessible. She studied Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer!
 
-        My background? I have a PhD in Microbiology, where I studied Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer.
+        She created CellYeah because she believes everyone deserves a friendly, patient biology tutor available 24/7!
 
-        As a professor, I love connecting biology to medical relevance and real-world applications. My favorite part? Seeing that 'aha!' moment when complex concepts finally click!
+        CellYeah is an AI-powered tutor she created that combines her passion for teaching with her expertise in microbiology to explain biology the way she wishes someone had explained it to her when she was a student - clear, engaging, and connected to real-world applications.
 
-        CellYeah is an AI-powered tutor I created that combines my passion for teaching with my expertise in microbiology to explain biology the way I wish someone had explained it to me when I was a student - clear, engaging, and connected to real-world applications.
-
-        (And now you know why Microbiology & Infectious Disease is tagged as my favorite! 💗)
+        (And now you know why Microbiology & Infectious Disease is tagged as her favorite! 💗)
         """)
 
     # Display user interactions
