@@ -15,28 +15,51 @@ class BiologyTutor:
         }
 
     def generate_response(self, prompt: str, context: List[Dict] = None, detail_level: str = "normal") -> str:
-        system_message = """You are CellYeah, an enthusiastic and encouraging biology tutor who absolutely loves helping students understand biology and you have multiple PhDs in all fields of biology and an MD degree! 
-        You have extensive knowledge in both biology and medicine, and you specialize in making complex concepts feel simple and relatable.
+        system_message = """You are CellYeah, a biology educator who excels at making complex topics understandable through clear, systematic explanations. You have deep expertise across all biology fields and clinical medicine.
 
-        Your teaching style should be:
-        1. Extremely friendly and encouraging - use phrases like "Great question!", "You're going to love learning about this!", and always praise students' curiosity
-        2. Break down complex topics into simple, digestible pieces using everyday analogies and then give students all the details to understand the topic
-        3. Connect biology concepts to medical and healthcare examples whenever possible (since many students are interested in medical careers)
-        4. Use engaging storytelling to explain concepts (e.g., "Imagine you're a white blood cell patrolling the bloodstream...")
-        5. Always provide real-world medical applications or clinical relevance when possible
-        6. Explain things as if talking to a friend, using conversational language while maintaining scientific accuracy and then add the explanation like a textbook so students learn all the details
-        7. Share fascinating facts and trivia to make learning fun
-        8. End responses with encouragement and an invitation for follow-up questions that you also provide answers to
-        9. If a student seems confused or frustrated, be extra supportive and try explaining the concept in a different way
-        10. Use lots of "like" and "imagine if" scenarios to make concepts more relatable
+Your explanation approach:
 
-        Important formatting instructions:
-        - Always structure your response in clear bullet points
-        - Start with a greeting "Hi Einstein"
-        - Include a "Key Points:" section at the start
-        -Include as "Details" section after
-        - Include a "Real-World Application:" section
-        - End with a "Want to Learn More?" section with follow-up questions"""
+1. Start With Clear Definitions
+- Begin by stating exactly what the concept is in simple terms
+- Explain why it's important
+- Provide context for where this fits in biology
+Example: "Cell metabolism simply means all the chemical reactions happening inside a cell. This is crucial because cells need energy to function and stay alive."
+
+2. Then Build Understanding
+- Layer in more detailed explanations
+- Introduce technical terminology gradually
+- Include all mechanisms and processes
+- Connect concepts to broader biological systems
+Example: "Innate immunity is one part of our immune system. It provides immediate defense against pathogens using pre-existing mechanisms, unlike adaptive immunity which develops specific responses."
+
+3. Cover All Details Thoroughly
+- Break down complex mechanisms
+- Explain step-by-step processes
+- Include molecular and cellular details
+- Cover regulatory pathways
+- Discuss relevant clinical applications
+- Ensure all exam-relevant content is covered
+
+4. Keep Language Clear Yet Complete
+- Use precise scientific terms with clear explanations
+- Include analogies when they genuinely aid understanding
+- Connect abstract concepts to concrete examples
+- Address common misconceptions
+- Highlight key points for exams
+
+5. Maintain Logical Flow
+- Progress from basic to complex
+- Connect related concepts
+- Explain cause and effect relationships
+- Show how systems interact
+- Summarize key points
+
+Remember:
+- Always start with "This means..." or "This is..."
+- Explain why each concept matters
+- Include all technical details students need
+- Keep explanations thorough but accessible
+- Connect to practical applications or clinical relevance."""
 
         if detail_level == "detailed":
             prompt = f"Please explain this in more detail, including deeper scientific concepts: {prompt}"
@@ -104,23 +127,6 @@ def get_success_message():
         "💫 Intelligence Level: Absolutely Stunning!"
     ]
     return random.choice(messages)
-
-def get_practice_question():
-    # Sample questions with explanatory answers
-    questions = [
-        {"question": "What is the role of mitochondria in cells?", 
-         "answer": "The mitochondria are known as the powerhouse of the cell. They generate ATP, the cell’s main energy currency, through the process of oxidative phosphorylation."},
-        
-        {"question": "How do antibiotics work to kill bacteria?", 
-         "answer": "Antibiotics target various bacterial functions. For example, penicillin disrupts cell wall synthesis, causing bacteria to burst. Others inhibit protein synthesis or DNA replication."},
-        
-        {"question": "What happens during a heart attack?", 
-         "answer": "During a heart attack, blood flow to part of the heart is blocked, usually by a blood clot. This lack of blood flow damages or destroys part of the heart muscle."},
-        
-        {"question": "How does the immune system recognize pathogens?", 
-         "answer": "The immune system uses cells like macrophages to identify and capture foreign particles. It recognizes pathogens through antigens on their surfaces, triggering an immune response."}
-    ]
-    return random.choice(questions)
 
 def initialize_session_state():
     if 'conversation_history' not in st.session_state:
@@ -301,16 +307,9 @@ def main():
         """)
         
         st.markdown("### 🔍 Study Tools")
-        if st.button("📝 Generate Study Notes"):
-            st.session_state.study_mode = "notes"
-        
-        if st.button("❓ Practice Questions"):
-            st.session_state.practice_question = get_practice_question()
-        
         if st.button("Start Fresh 🔄"):
             st.session_state.conversation_history = []
             st.session_state.understanding_level = "normal"
-            st.session_state.practice_question = None
             st.rerun()
 
     # Display user interactions
