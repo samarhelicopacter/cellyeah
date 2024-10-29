@@ -251,7 +251,6 @@ def process_response(tutor, prompt, detail_level):
         {"role": "user", "content": prompt},
         {"role": "assistant", "content": response}
     ])
-    st.session_state["current_question"] = ""
     show_success_message()
 
 def main():
@@ -353,20 +352,35 @@ def main():
     with col3:
         simpler_button = st.button("😕 I Still Don't Understand")
 
+   # Handle button clicks
     if submit_button and st.session_state.current_question:
         st.session_state.understanding_level = "normal"
         process_response(tutor, st.session_state.current_question, "normal")
         st.rerun()
 
-    if detail_button and st.session_state.current_question:
-        st.session_state.understanding_level = "detailed"
-        process_response(tutor, st.session_state.current_question, "detailed")
-        st.rerun()
+    if detail_button and len(st.session_state.conversation_history) > 0:
+        # Get the last question from conversation history
+        last_question = None
+        for message in reversed(st.session_state.conversation_history):
+            if message["role"] == "user":
+                last_question = message["content"]
+                break
+        
+        if last_question:
+            process_response(tutor, f"Please explain this in more detail, including deeper scientific concepts: {last_question}", "detailed")
+            st.rerun()
 
-    if simpler_button and st.session_state.current_question:
-        st.session_state.understanding_level = "simpler"
-        process_response(tutor, st.session_state.current_question, "simpler")
-        st.rerun()
+    if simpler_button and len(st.session_state.conversation_history) > 0:
+        # Get the last question from conversation history
+        last_question = None
+        for message in reversed(st.session_state.conversation_history):
+            if message["role"] == "user":
+                last_question = message["content"]
+                break
+        
+        if last_question:
+            process_response(tutor, f"I'm still having trouble understanding. Can you explain this in a simpler way with different examples?: {last_question}", "simpler")
+            st.rerun()
 
     st.markdown("---")
     st.markdown("🧬 Understanding Biology, One Cell at a Time! 🔬")
