@@ -153,9 +153,9 @@ Remember:
 - Connect to practical applications or clinical relevance."""
 
         if detail_level == "detailed":
-            prompt = f"Please explain this in more detail, including deeper scientific concepts: {prompt}"
+            prompt = f"Add more detail and complexity to this explanation: {prompt}"
         elif detail_level == "simpler":
-            prompt = f"I'm still having trouble understanding. Can you explain this in a simpler way with different examples?: {prompt}"
+            prompt = f"Break this down into simpler terms with clear examples: {prompt}"
 
         try:
             messages = []
@@ -439,9 +439,9 @@ def main():
     with col1:
         submit_button = st.button("Ask CellYeah! 🧬")
     with col2:
-        detail_button = st.button("📚 Explain in More Detail")
+        detail_button = st.button("Add Detail 📚 More Depth 🤓")
     with col3:
-        simpler_button = st.button("😕 I Still Don't Understand")
+        simpler_button = st.button("Simplify This 💡 I Still Don't Get It 🤔")
 
    # Handle button clicks
     if submit_button and st.session_state.current_question:
