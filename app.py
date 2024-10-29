@@ -235,56 +235,58 @@ def apply_custom_styles():
     st.markdown("""
         <style>
         .stApp {
-            background-color: #FFF0F5;
+            background-color: #FFFFFF;
         }
         .welcome-message {
-            background: linear-gradient(45deg, #FF69B4, #FF1493);
-            color: white;
+            background: linear-gradient(45deg, #F8F9FA, #FFC6D9);
+            color: #2C3E50;
             padding: 20px;
             border-radius: 15px;
             margin: 20px 0;
             font-size: 28px;
             text-align: center;
             animation: bounce 1s ease;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255,20,147,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,154,190,0.3);
         }
         .success-message {
-            background: linear-gradient(45deg, #FF1493, #FF69B4);
-            color: white;
+            background: linear-gradient(45deg, #FFFFFF, #FFC6D9);
+            color: #2C3E50;
             padding: 15px;
             border-radius: 15px;
             margin: 10px 0;
             font-size: 22px;
             text-align: center;
             animation: slideIn 0.5s ease;
-            box-shadow: 0 4px 15px rgba(255,20,147,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,154,190,0.2);
         }
         .topic-header {
-            background: linear-gradient(45deg, #FF69B4, #FF1493);
-            color: white;
+            background: #FFFFFF;
+            color: #2C3E50;
             padding: 10px 20px;
             border-radius: 25px;
             margin: 15px 0;
             text-align: center;
             font-size: 24px;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,154,190,0.3);
         }
         .user-message {
-            background-color: #FFE4E1;
+            background-color: #F8F9FA;
             padding: 15px;
             border-radius: 15px;
             margin: 10px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .assistant-message {
-            background-color: #FFC0CB;
+            background-color: #FFE6EE;
             padding: 15px;
             border-radius: 15px;
             margin: 10px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,154,190,0.2);
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
@@ -296,29 +298,33 @@ def apply_custom_styles():
             to {transform: translateX(0);}
         }
         .stButton>button {
-            background: linear-gradient(45deg, #FF69B4, #FF1493);
-            color: white;
-            border: none;
+            background: linear-gradient(45deg, #FFFFFF, #FFC6D9);
+            color: #2C3E50;
+            border: 1px solid rgba(255,154,190,0.3);
             border-radius: 25px;
             padding: 12px 24px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255,20,147,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .stButton>button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,20,147,0.3);
-            background: linear-gradient(45deg, #FF1493, #FF69B4);
+            box-shadow: 0 6px 20px rgba(255,154,190,0.2);
+            background: linear-gradient(45deg, #FFC6D9, #FFFFFF);
+            border-color: rgba(255,154,190,0.5);
         }
         .stTextArea>div>div {
             border-radius: 15px;
-            border: 2px solid #FF69B4;
+            border: 1px solid rgba(255,154,190,0.3);
         }
         .stTextArea>div>div:focus {
-            border: 2px solid #FF1493;
-            box-shadow: 0 0 10px rgba(255,20,147,0.2);
+            border: 1px solid rgba(255,154,190,0.5);
+            box-shadow: 0 0 10px rgba(255,154,190,0.1);
+        }
+        .sidebar .sidebar-content {
+            background-color: #FFFFFF;
         }
         </style>
     """, unsafe_allow_html=True)
