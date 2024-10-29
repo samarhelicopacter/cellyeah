@@ -105,6 +105,23 @@ def get_success_message():
     ]
     return random.choice(messages)
 
+def get_practice_question():
+    # Sample questions with explanatory answers
+    questions = [
+        {"question": "What is the role of mitochondria in cells?", 
+         "answer": "The mitochondria are known as the powerhouse of the cell. They generate ATP, the cell’s main energy currency, through the process of oxidative phosphorylation."},
+        
+        {"question": "How do antibiotics work to kill bacteria?", 
+         "answer": "Antibiotics target various bacterial functions. For example, penicillin disrupts cell wall synthesis, causing bacteria to burst. Others inhibit protein synthesis or DNA replication."},
+        
+        {"question": "What happens during a heart attack?", 
+         "answer": "During a heart attack, blood flow to part of the heart is blocked, usually by a blood clot. This lack of blood flow damages or destroys part of the heart muscle."},
+        
+        {"question": "How does the immune system recognize pathogens?", 
+         "answer": "The immune system uses cells like macrophages to identify and capture foreign particles. It recognizes pathogens through antigens on their surfaces, triggering an immune response."}
+    ]
+    return random.choice(questions)
+
 def initialize_session_state():
     if 'conversation_history' not in st.session_state:
         st.session_state.conversation_history = []
@@ -114,6 +131,8 @@ def initialize_session_state():
         st.session_state.current_question = None
     if 'understanding_level' not in st.session_state:
         st.session_state.understanding_level = "normal"
+    if 'practice_question' not in st.session_state:
+        st.session_state.practice_question = None  # To store the current practice question
 
 def apply_custom_styles():
     st.markdown("""
@@ -239,6 +258,14 @@ def main():
     apply_custom_styles()
     initialize_session_state()
 
+    # Initialize tutor instance
+    if 'ANTHROPIC_API_KEY' not in st.secrets:
+        st.error("Please set your ANTHROPIC_API_KEY in .streamlit/secrets.toml!")
+        st.stop()
+        
+    api_key = st.secrets["ANTHROPIC_API_KEY"]
+    tutor = BiologyTutor(api_key)  # Initialize tutor here
+
     # Welcome Message
     st.markdown(f"""
         <div class="welcome-message">
@@ -246,22 +273,24 @@ def main():
         </div>
     """, unsafe_allow_html=True)
 
+    # Sidebar for Learning Tips and Expertise
     with st.sidebar:
-        st.title("🧬 CellYeah!")
-        st.markdown("Your Friendly Biology & Medical Science Tutor")
-        
-        topic = st.selectbox(
-            "Choose your topic:",
-            ["General Biology", "Cell Biology & Medical Lab Science", 
-             "Genetics & Medical Genetics", "Human Anatomy & Physiology",
-             "Microbiology & Infectious Disease", "Biochemistry & Pharmacology",
-             "Neurobiology & Neuroscience", "Immunology & Disease",
-             "Biotechnology & Medical Innovation", "Clinical Applications"]
-        )
-        
-        st.markdown("---")
+        st.markdown("### 🧬 CellYeah is an Expert in:")
         st.markdown("""
-        ### 📚 Learning Tips:
+        - General Biology
+        - Cell Biology & Medical Lab Science
+        - Genetics & Medical Genetics
+        - Human Anatomy & Physiology
+        - Microbiology & Infectious Disease
+        - Biochemistry & Pharmacology
+        - Neurobiology & Neuroscience
+        - Immunology & Disease
+        - Biotechnology & Medical Innovation
+        - Clinical Applications
+        """)
+        
+        st.markdown("### 📚 Learning Tips:")
+        st.markdown("""
         - Ask about medical applications
         - Request real-life examples
         - Ask "What if" questions
@@ -274,27 +303,17 @@ def main():
         st.markdown("### 🔍 Study Tools")
         if st.button("📝 Generate Study Notes"):
             st.session_state.study_mode = "notes"
+        
         if st.button("❓ Practice Questions"):
-            st.session_state.study_mode = "quiz"
+            st.session_state.practice_question = get_practice_question()
         
         if st.button("Start Fresh 🔄"):
             st.session_state.conversation_history = []
             st.session_state.understanding_level = "normal"
+            st.session_state.practice_question = None
             st.rerun()
 
-    st.markdown(f"""
-        <div class="topic-header">
-            🧬 Current Topic: {topic} 
-        </div>
-    """, unsafe_allow_html=True)
-
-    if 'ANTHROPIC_API_KEY' not in st.secrets:
-        st.error("Please set your ANTHROPIC_API_KEY in .streamlit/secrets.toml!")
-        st.stop()
-        
-    api_key = st.secrets["ANTHROPIC_API_KEY"]
-    tutor = BiologyTutor(api_key)
-
+    # Display user interactions
     for message in st.session_state.conversation_history:
         role = message["role"]
         content = message["content"]
@@ -312,12 +331,21 @@ def main():
                 </div>
             """, unsafe_allow_html=True)
 
+    # Display Practice Question and Answer below interactions
+    if st.session_state.practice_question:
+        st.markdown("### 🧠 Practice Question")
+        st.write(f"**Question:** {st.session_state.practice_question['question']}")
+        st.write("**Answer:**")
+        st.write(st.session_state.practice_question['answer'])
+
+    # Input for asking questions
     prompt = st.text_input("Ask anything about biology or medical science:", 
                            placeholder="Example: How does this relate to medicine? Can you explain it with a real-world example?",
                            on_change=lambda: process_response(tutor, st.session_state.current_question, "normal"),
                            key="current_question")
     
-    col1, col2, col3, col4 = st.columns([1, 1, 1, 2])
+    # Action Buttons
+    col1, col2, col3 = st.columns([1, 1, 1])
     
     with col1:
         submit_button = st.button("Ask CellYeah! 🧬")
@@ -325,23 +353,6 @@ def main():
         detail_button = st.button("📚 Explain in More Detail")
     with col3:
         simpler_button = st.button("😕 I Still Don't Understand")
-    with col4:
-        example_button = st.button("💡 Show Example Question")
-
-    if example_button:
-        example_questions = {
-            "General Biology": "How do cells protect themselves from damage, and how is this relevant in diseases like cancer?",
-            "Cell Biology & Medical Lab Science": "How do doctors use cell biology knowledge when interpreting blood tests?",
-            "Genetics & Medical Genetics": "How do genetic mutations lead to diseases, and how are they treated?",
-            "Human Anatomy & Physiology": "What happens in the body during a heart attack, and how do treatments work?",
-            "Microbiology & Infectious Disease": "How do antibiotics work, and why is antibiotic resistance a problem?",
-            "Biochemistry & Pharmacology": "How do pain medications work at the molecular level?",
-            "Neurobiology & Neuroscience": "What happens in the brain during a seizure, and how do medications help?",
-            "Immunology & Disease": "How does our immune system fight off viruses, and why do vaccines help?",
-            "Biotechnology & Medical Innovation": "How is CRISPR being used to treat genetic diseases?",
-            "Clinical Applications": "How do doctors use laboratory tests to diagnose diseases?"
-        }
-        st.text_area("Try this example:", value=example_questions[topic], height=50)
 
     if submit_button and st.session_state.current_question:
         st.session_state.understanding_level = "normal"
