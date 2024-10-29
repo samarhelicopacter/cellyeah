@@ -251,7 +251,7 @@ def process_response(tutor, prompt, detail_level):
         {"role": "user", "content": prompt},
         {"role": "assistant", "content": response}
     ])
-    
+    st.session_state["current_question"] = ""
     show_success_message()
 
 def main():
