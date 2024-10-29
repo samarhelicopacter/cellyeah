@@ -401,12 +401,6 @@ def main():
         - Take it step by step
         - Ask for clarification anytime!
         """)
-        
-        st.markdown("### 🔍 Study Tools")
-        if st.button("Start Fresh 🔄"):
-            st.session_state.conversation_history = []
-            st.session_state.understanding_level = "normal"
-            st.rerun()
 
     # Display user interactions
     for message in st.session_state.conversation_history:
@@ -448,6 +442,17 @@ def main():
         detail_button = st.button("Add Detail 📚 More Depth 🤓")
     with col3:
         simpler_button = st.button("Simplify This 💡 I Still Don't Get It 🤔")
+    
+    # Add spacing
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # Start Fresh button centered below
+    col1, col2, col3 = st.columns([1.2, 1, 1.2])
+    with col2:
+        if st.button("Start Fresh 🔄"):
+            st.session_state.conversation_history = []
+            st.session_state.understanding_level = "normal"
+            st.rerun()
 
    # Handle button clicks
     if submit_button and st.session_state.current_question:
