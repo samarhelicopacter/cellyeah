@@ -479,12 +479,17 @@ def process_response(tutor, prompt, detail_level):
         for i, msg in enumerate(st.session_state.conversation_history)
     ]
     
-    response = tutor.generate_response(prompt, conversation_context, detail_level)
+    # Display the loading message while generating the response
+    with st.spinner("Hang tight, brilliant mind! A detailed answer is on its way just for you; it takes me a few seconds to think...🧠"):
+        response = tutor.generate_response(prompt, conversation_context, detail_level)
     
+    # Update conversation history with the new response
     st.session_state.conversation_history.extend([
         {"role": "user", "content": prompt},
         {"role": "assistant", "content": response}
     ])
+    
+    # Display a success message after the response is generated
     show_success_message()
 
 def main():
