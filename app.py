@@ -147,7 +147,7 @@ def get_random_greeting():
         "🧬 Brainpower is Beautiful",
         "⚡ Brilliance Unlocked",
         "💫 Your Mind Shines",
-        "🧠 Intelligence is Irresistible"
+        "🧠 Intelligence is Irresistible",
         "🎯 Your Intelligence is Showing (And We Love It!)",
         "✨ Brilliant Answer Alert!",
         "🧠 Your Intelligence is Radiant",
@@ -265,7 +265,7 @@ def process_response(tutor, prompt, detail_level):
     ]
     
     # Display the loading message while generating the response
-    with st.spinner("🧬Hang tight! An answer is on its way for you as it takes me a few seconds to think...🧠"):
+    with st.spinner("🧬 Hang tight! An answer is on its way for you as it takes me a few seconds to think...🧠"):
         response = tutor.generate_response(prompt, conversation_context, detail_level)
     
     # Update conversation history with the new response
@@ -319,7 +319,7 @@ def main():
         st.markdown("<br>", unsafe_allow_html=True)
     
          # Add creator bio here
-        st.markdown("### Meet the Creator! 👋")
+        st.markdown("### 👋 Meet the Creator!")
         st.markdown("""
         My creator has a PhD in Microbiology and is a professor who loves making biology fun and understandable. Her PhD research was on Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer!
 
@@ -369,7 +369,7 @@ def main():
     with col2:
         detail_button = st.button("Add Detail 📚 More Depth 🤓")
     with col3:
-        simpler_button = st.button("Simplify This 💡 I Still Don't Get It 🤔")
+        simpler_button = st.button("Simplify This 💡 I Don't Get It 🤔")
     
     # Add spacing
     st.markdown("<br>", unsafe_allow_html=True)
