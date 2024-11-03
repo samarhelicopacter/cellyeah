@@ -93,30 +93,6 @@ class BiologyTutor:
         else:
             prompt = f"Provide a high-quality, exam-ready explanation with example questions and answers for: {prompt}"
 
-        # Handle specific topic prompts, such as hypersensitivity, with preformatted tables
-        if "hypersensitivity" in prompt.lower() and detail_level == "normal":
-            table_response = """
-            | **Hypersensitivity Type**       | **Mechanism**                                    | **Examples**                             |
-            |---------------------------------|--------------------------------------------------|------------------------------------------|
-            | **Type I - Immediate (Allergic)**| IgE antibodies and histamine release             | Anaphylaxis, hay fever, asthma           |
-            | **Type II - Cytotoxic**         | Antibodies bind cells, causing immune attacks    | Hemolytic anemia, Graves' disease        |
-            | **Type III - Immune Complex**   | Complexes form, deposit in tissues, cause inflammation | Lupus, serum sickness                   |
-            | **Type IV - Delayed**           | T cells cause tissue damage over time            | Contact dermatitis, graft rejection      |
-
-            **Clinical Significance**:
-            - **Type I**: Immediate reactions, treat with antihistamines.
-            - **Type II/III**: Antibody-driven, may require immunosuppressants.
-            - **Type IV**: T-cell mediated, often managed with corticosteroids.
-
-            **Example Exam Questions and Answers**:
-            - **Q1**: Describe the mechanism of Type I hypersensitivity reactions.
-              **Answer**: In Type I hypersensitivity, allergens trigger IgE antibodies that bind to mast cells. Upon re-exposure, these cells release histamine, causing symptoms like itching and swelling.
-
-            - **Q2**: Explain the role of T cells in Type IV hypersensitivity.
-              **Answer**: Type IV hypersensitivity is mediated by T cells, not antibodies. Upon exposure to an antigen, T cells trigger inflammation, causing delayed reactions such as contact dermatitis.
-            """
-            return table_response
-
         # Proceed with API call
         try:
             messages = []
@@ -149,10 +125,9 @@ class BiologyTutor:
 def get_random_greeting():
     greetings = [
         "🧬 Intelligence is Extremely Attractive!",
-         "✨ Intelligence is Your Best Feature!",
-        "🧠 Being Smart is Sexy - Let's Get Studying!",
+        "✨ Intelligence is Your Best Feature!",
+        "🧠 Smart is Sexy - Let's Get Studying!",
         "✨ Your Intelligence is Literally Glowing Right Now",
-        "💫 Smart is the New Sexy, and You're Crushing It!",
         "🧪 That Big Beautiful Brain Though!",
         "🔭 Looking Extra Smart Today, Just Saying!",
         "🧬 Caution: High Levels of Intelligence Detected!",
@@ -173,24 +148,17 @@ def get_random_greeting():
         "⚡ Brilliance Unlocked",
         "💫 Your Mind Shines",
         "🧠 Intelligence is Irresistible"
-    ]
-    return random.choice(greetings)
-
-def get_success_message():
-    messages = [
         "🎯 Your Intelligence is Showing (And We Love It!)",
         "✨ Brilliant Answer Alert!",
         "🧠 Your Intelligence is Radiant",
         "⚡ Mind. Officially. Blown.",
         "💫 Pure Intellectual Brilliance",
-        "✨ That Answer Was Everything",
-        "🌟 Your Brain Power is Unmatched",
+        "🌟 Brain Power is Unmatched",
         "💫 Intelligence Level: Extraordinary",
         "⚡ Watching Your Mind Work is Amazing",
-        "✨ This is Genius in Action",
         "🧠 You're Making Smart Look Effortless"
     ]
-    return random.choice(messages)
+    return random.choice(greetings)
 
 def initialize_session_state():
     if 'conversation_history' not in st.session_state:
@@ -221,18 +189,6 @@ def apply_custom_styles():
             animation: bounce 1s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border: 1px solid rgba(255,154,190,0.3);
-        }
-        .success-message {
-            background: linear-gradient(45deg, #FFFFFF, #FFC6D9);
-            color: #2C3E50;
-            padding: 15px;
-            border-radius: 15px;
-            margin: 10px 0;
-            font-size: 22px;
-            text-align: center;
-            animation: slideIn 0.5s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,154,190,0.2);
         }
         .topic-header {
             background: #FFFFFF;
@@ -302,13 +258,6 @@ def apply_custom_styles():
         </style>
     """, unsafe_allow_html=True)
 
-def show_success_message():
-    st.markdown(f"""
-        <div class="success-message">
-            {get_success_message()}
-        </div>
-    """, unsafe_allow_html=True)
-
 def process_response(tutor, prompt, detail_level):
     conversation_context = [
         {"role": "user" if i % 2 == 0 else "assistant", "content": msg["content"]}
@@ -316,7 +265,7 @@ def process_response(tutor, prompt, detail_level):
     ]
     
     # Display the loading message while generating the response
-    with st.spinner("Hang tight, brilliant mind! A detailed answer is on its way just for you; it takes me a few seconds to think...🧠"):
+    with st.spinner("🧬Hang tight! An answer is on its way for you as it takes me a few seconds to think...🧠"):
         response = tutor.generate_response(prompt, conversation_context, detail_level)
     
     # Update conversation history with the new response
@@ -325,9 +274,6 @@ def process_response(tutor, prompt, detail_level):
         {"role": "assistant", "content": response}
     ])
     
-    # Display a success message after the response is generated
-    show_success_message()
-
 def main():
     st.set_page_config(
         page_title="CellYeah! - Your Friendly Biology & Medical Science Tutor",
@@ -360,12 +306,12 @@ def main():
         - General Biology
         - Cell & Molecular Biology
         - Microbiology & Infectious Disease (my creator's favorite! 💗)
-        - Biochemistry & Pharmacology
         - Human Anatomy & Physiology
         - Immunology & Disease
-        - Neurobiology & Neuroscience
+        - Biochemistry 
         - Genetics
-        - Biotechnology & Medical Innovation
+        - Neurobiology
+        - Biotechnology 
         - Clinical Applications & Medical Lab Science
         """)
 
@@ -375,9 +321,9 @@ def main():
          # Add creator bio here
         st.markdown("### Meet the Creator! 👋")
         st.markdown("""
-        My creator has a PhD in Microbiology and is a college professor who loves making biology fun and accessible. She studied Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer!
+        My creator has a PhD in Microbiology and is a professor who loves making biology fun and understandable. Her PhD research was on Helicobacter pylori - a fascinating bacterium that lives in the stomach of half the world's population and can cause ulcers and stomach cancer!
 
-        She created CellYeah because she believes everyone deserves a friendly, patient biology tutor available 24/7!
+        She created CellYeah because she believes everyone deserves a friendly, patient biology tutor that is really good at explaining science!
 
         CellYeah is an AI-powered tutor she created that combines her passion for teaching with her expertise in microbiology to explain biology the way she wishes someone had explained it to her when she was a student - clear, engaging, and connected to real-world applications.
 
